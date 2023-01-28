@@ -1,8 +1,8 @@
 import { useEffect, useRef, useState } from "react";
-import { useSocketContext } from "../../contexts/SocketContext";
-import { useUIContext } from "../../contexts/UIContext";
-import useStream from "../../hooks/useStream";
-import SelectDevicePopup from "../SelectDevicePopup/SelectDevicePopup";
+import { useSocketContext } from "../../../contexts/SocketContext";
+import { useUIContext } from "../../../contexts/UIContext";
+import useStream from "../../../hooks/useStream";
+import SelectDevicePopup from "../../SelectDevicePopup/SelectDevicePopup";
 import s from "./Stream.module.css";
 
 const Stream = () => {

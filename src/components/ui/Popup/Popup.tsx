@@ -1,4 +1,5 @@
 import { ReactNode } from "react";
+import Card from "../Card/Card";
 import s from "./Popup.module.css";
 
 const Popup = ({
@@ -9,15 +10,15 @@ const Popup = ({
   onClose: () => void;
 }) => {
   return (
-    <div className={s.root}>
+    <Card className={s.root}>
       <button
-        className="cursor-pointer bg-cyan-600 p-1 rounded w-2/12"
+        className="cursor-pointer bg-gray-900 p-1 rounded w-10"
         onClick={() => onClose()}
       >
         ❌
       </button>
       {children}
-    </div>
+    </Card>
   );
 };
 

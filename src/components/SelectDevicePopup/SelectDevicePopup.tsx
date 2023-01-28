@@ -1,4 +1,5 @@
 import useDevices from "../../hooks/useDevices";
+import s from "./SelectDevicePopup.module.css";
 
 const SelectDevicePopup = ({
   onSelect,
@@ -12,13 +13,16 @@ const SelectDevicePopup = ({
   }
 
   return (
-    <div className="flex flex-col gap-y-2">
+    <div className={s.root}>
+      <p className="text-gray-900 text-3xl text-center">
+        Select a recording device
+      </p>
       {devices.map((device, i) => {
         return (
           device.kind === "videoinput" && (
             <div
               onClick={() => onSelect(device.deviceId)}
-              className="flex-col text-center cursor-pointer gap-y-2 p-2 border rounded bg-white text-black text-sm"
+              className={s.device}
               key={device.deviceId + i}
             >
               <div>{device.label}</div>

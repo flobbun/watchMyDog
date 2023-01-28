@@ -1,0 +1,7 @@
+.root {
+    @apply flex flex-col gap-y-4;
+}
+
+.device {
+    @apply flex-col text-center cursor-pointer gap-y-2 p-2 rounded bg-gray-900 text-gray-200 text-sm;
+}

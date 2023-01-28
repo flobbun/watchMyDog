@@ -7,6 +7,5 @@
 }
 
 .renderedImage {
-    @apply m-auto w-full h-full;
-
+    @apply m-auto w-full h-full rounded-md;
 }

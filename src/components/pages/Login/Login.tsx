@@ -1,27 +1,18 @@
 import { useState } from "react";
+import useLogin from "../../../hooks/useLogin";
 import s from "./Login.module.css";
 
 const Login = ({ onLogin }: { onLogin: (token: string) => void }) => {
   const [password, setPassword] = useState("");
-  const [error, setError] = useState<string>("");
+  const { error, login } = useLogin();
 
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    setError("");
-    const res = await fetch("/auth/login", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ password }),
-    });
-    const data = await res.json();
-    if (data?.token) {
-      localStorage.setItem("authToken", data.token);
-      onLogin(data.token);
-    } else {
-      setError(data.message);
+    const token = await login(password);
+    if (token) {
+      localStorage.setItem("authToken", token);
+      onLogin(token);
     }
   };
 

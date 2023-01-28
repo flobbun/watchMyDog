@@ -3,7 +3,7 @@ import express from "express";
 import http from "http";
 import dotenv from "dotenv";
 import { Server as socketIO } from "socket.io";
-import { verify, sign } from "jsonwebtoken";
+import jwt from "jsonwebtoken";
 
 dotenv.config();
 
@@ -45,7 +45,7 @@ if (!isProduction) {
 
 // JWT
 const signToken = () =>
-  sign(
+  jwt.sign(
     {
       password: process.env.PASSWORD,
     },
@@ -55,7 +55,7 @@ const signToken = () =>
     }
   );
 
-const verifyToken = (token) => verify(token, process.env.JWT_SECRET);
+const verifyToken = (token) => jwt.verify(token, process.env.JWT_SECRET);
 
 // Auth routes
 app.post("/auth/login", (req, res) => {
@@ -119,6 +119,10 @@ io.on("connection", (socket) => {
 
   socket.on("stream", (data) => {
     socket.broadcast.emit("stream", data);
+  });
+
+  socket.on("action", (action) => {
+    socket.broadcast.emit("action", action);
   });
 
   socket.on("disconnect", () => {
