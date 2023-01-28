@@ -15,6 +15,9 @@ let socket: any = null;
 
 export const SocketProvider = ({ children }: { children: ReactNode }) => {
   socket = socket ? socket : typeof io !== 'undefined' ? io(undefined, {
+    auth: {
+      token: localStorage.getItem('authToken')
+    },
     autoConnect: false
   }) : null;
 

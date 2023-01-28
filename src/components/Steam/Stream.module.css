@@ -1,3 +1,7 @@
+.root {
+    @apply text-white text-center;
+}
+
 .canvas {
-    @apply invisible;
+    @apply invisible absolute top-0 left-96; /* Comment to debug */
 }

@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Footer, Header, Stream, Watch } from "./components";
 import Layout from "./components/common/Layout/Layout";
+import Login from "./components/Login/Login";
 
 type Mode = "watch" | "stream" | null;
 
@@ -25,19 +26,32 @@ const Menu = ({ onSelect }: { onSelect: (mode: Mode) => void }) => {
 
 function App() {
   const [mode, setMode] = useState<Mode>(null);
+  const [token, setToken] = useState<string | null>(null);
+
+  useEffect(() => {
+    setToken(localStorage.getItem("authToken"));
+  }, []);
 
   return (
-      <Layout>
-        <Header />
-        {mode === "watch" ? (
+    <Layout>
+      <Header />
+      {token !== null ? (
+        mode === "watch" ? (
           <Watch />
         ) : mode === "stream" ? (
           <Stream />
         ) : (
           <Menu onSelect={(m) => setMode(m)} />
-        )}
-        <Footer />
-      </Layout>
+        )
+      ) : (
+        <Login
+          onLogin={(token) => {
+            setToken(token);
+          }}
+        />
+      )}
+      <Footer />
+    </Layout>
   );
 }
 
