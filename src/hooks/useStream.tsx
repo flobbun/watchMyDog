@@ -2,23 +2,23 @@ import { RefObject } from "react";
 
 const useStream = () => {
   const constraints: MediaStreamConstraints = {
-    video: {
-      width: {
-        min: 1280,
-        ideal: 1920,
-        max: 2560,
-      },
-      height: {
-        min: 720,
-        ideal: 1080,
-        max: 1440,
-      },
-    },
+    // video: {
+    //   width: {
+    //     min: innerWidth,
+    //     ideal: innerWidth,
+    //     max: screen.availWidth,
+    //   },
+    //   height: {
+    //     min: innerHeight,
+    //     ideal: innerHeight,
+    //     max: screen.availHeight,
+    //   },
+    // },
+    video: true,
     audio: false,
   };
 
   const requestPermissions = async (deviceId?: string) => {
-    console.log("requestPermissions", deviceId);
     if (
       "mediaDevices" in navigator &&
       "getUserMedia" in navigator.mediaDevices

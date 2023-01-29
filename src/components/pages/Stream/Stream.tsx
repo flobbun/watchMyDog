@@ -41,7 +41,6 @@ const Stream = () => {
   };
 
   const onResolutionChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    console.log(e.target.value);
     setResolution({ ...resolution, [e.target.name]: Number(e.target.value) });
   };
 
@@ -56,8 +55,8 @@ const Stream = () => {
   return (
     <>
       <div className={s.root} hidden={!isStreaming}>
-        <p className="text-center text-white">Streaming</p>
-        <div className="flex gap-x-4 p-4">
+        <p className="text-center text-white text-4xl">Streaming</p>
+        <div className="flex gap-x-4 p-12">
           <p className="text-white">DW</p>
           <input
             name="dw"
@@ -76,6 +75,7 @@ const Stream = () => {
             value={resolution.dh}
             onChange={onResolutionChange}
           />
+          <p className="text-white">DX</p>
           <input
             name="dx"
             min={0}
@@ -84,6 +84,7 @@ const Stream = () => {
             value={resolution.dx}
             onChange={onResolutionChange}
           />
+          <p className="text-white">DY</p>
           <input
             name="dy"
             min={0}
@@ -94,7 +95,7 @@ const Stream = () => {
           />
         </div>
         <video
-          className="w-full h-full"
+          className="w-2/4 h-2/4 m-auto rounded-md border border-gray-500"
           ref={videoRef}
           autoPlay
         />
