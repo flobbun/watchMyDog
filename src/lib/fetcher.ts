@@ -7,14 +7,20 @@ const fetcher = async ({
   method?: "post" | "get";
   body?: any;
 }) => {
-  const res = await fetch(url, {
-    method,
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: method === "post" ? JSON.stringify(body) : undefined,
-  });
-  return await res.json();
+  try {
+    const res = await fetch(url, {
+      method,
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: method === "post" ? JSON.stringify(body) : undefined,
+    });
+    return await res.json();
+  } catch (error) {
+    if (error) {
+      // ...
+    }
+  }
 };
 
 export default fetcher;

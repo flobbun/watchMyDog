@@ -1,39 +1,18 @@
 import { useEffect, useState } from "react";
-import { Footer, Header, Stream, Watch } from "./components";
-import Layout from "./components/common/Layout/Layout";
-import Login from "./components/pages/Login/Login";
-import Menu from "./components/pages/Menu/Menu";
-import { Mode } from "./interfaces/types";
+import ProviderHub from "./components/common/ProviderHub/ProviderHub";
+import Router from "./components/common/Router/Router";
+import Error404 from "./components/pages/Error404/Error404";
 
 function App() {
-  const [mode, setMode] = useState<Mode>(null);
-  const [token, setToken] = useState<string | null>(null);
-
-  useEffect(() => {
-    setToken(localStorage.getItem("authToken"));
-  }, []);
+  if (typeof document === 'undefined') {
+    return <Error404/>;
+  }
 
   return (
-    <Layout>
-      <Header />
-      {token !== null ? (
-        mode === "watch" ? (
-          <Watch />
-        ) : mode === "stream" ? (
-          <Stream />
-        ) : (
-          <Menu onSelect={(m) => setMode(m)} />
-        )
-      ) : (
-        <Login
-          onLogin={(token) => {
-            setToken(token);
-          }}
-        />
-      )}
-      <Footer />
-    </Layout>
-  );
+    <ProviderHub>
+      <Router/>
+    </ProviderHub>
+  )
 }
 
 export default App;

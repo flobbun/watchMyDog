@@ -1,4 +1,4 @@
 .root {
-    @apply flex flex-col min-h-screen bg-cover pt-4 bg-center bg-no-repeat;
-    background-image: url('images/bg.jpeg');
+    @apply flex flex-col min-h-screen bg-cover bg-center bg-no-repeat;
+    background-image: url('images/bg.jpg');
 }

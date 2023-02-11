@@ -7,6 +7,7 @@ const useSound = () => {
     const audioPath = {
       ["bark-1"]: "/sounds/bark-1.wav",
       ["bark-2"]: "/sounds/bark-2.wav",
+      ["meow"]: "/sounds/meow.mp3",
       ["whistle"]: "/sounds/whistle.wav",
     };
 

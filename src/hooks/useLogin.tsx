@@ -1,5 +1,7 @@
 import { useState } from "react";
+import { StorageVars } from "../constants/StorageVars";
 import fetcher from "../lib/fetcher";
+import { setObject } from "../lib/storageManagement";
 
 const useLogin = () => {
   const [error, setError] = useState("");
@@ -12,7 +14,7 @@ const useLogin = () => {
       body: { password },
     });
     if (data?.token) {
-      localStorage.setItem("authToken", data.token);
+      setObject(StorageVars.TOKEN, data.token);
       return data?.token;
     } else {
       setError(data.message);

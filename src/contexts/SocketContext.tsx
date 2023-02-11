@@ -1,9 +1,11 @@
 declare const io: any;
 
 import { createContext, ReactNode, useContext, useEffect } from "react";
+import { StorageVars } from "../constants/StorageVars";
 import useSound from "../hooks/useSound";
+import { getObject } from "../lib/storageManagement";
 
-export type Action = 'bark-1' | 'bark-2' | 'whistle';
+export type Action = 'bark-1' | 'bark-2' | 'meow' | 'whistle';
 
 export interface SocketContextValue {
   socket: any;
@@ -19,12 +21,23 @@ let socket: any = null;
 
 export const SocketProvider = ({ children }: { children: ReactNode }) => {
   const { playSound } = useSound();
-  socket = socket ? socket : typeof io !== 'undefined' ? io(undefined, {
-    auth: {
-      token: localStorage.getItem('authToken')
-    },
-    autoConnect: false
-  }) : null;
+
+  const connect = () => {
+    if (socket) {
+      return socket;
+    } else if (typeof io !== 'undefined') {
+      return io(undefined, {
+        auth: {
+          token: getObject(StorageVars.TOKEN)
+        },
+        autoConnect: false
+      })
+    }
+
+    return null;
+  }
+
+  socket = connect();
 
   const onAction = (action: Action) => {
     playSound(action);

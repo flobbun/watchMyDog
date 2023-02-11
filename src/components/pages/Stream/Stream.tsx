@@ -1,6 +1,6 @@
+import Modal from "antd/es/modal/Modal";
 import { useEffect, useRef, useState } from "react";
 import { useSocketContext } from "../../../contexts/SocketContext";
-import { useUIContext } from "../../../contexts/UIContext";
 import useStream from "../../../hooks/useStream";
 import SelectDevicePopup from "../../SelectDevicePopup/SelectDevicePopup";
 import s from "./Stream.module.css";
@@ -9,16 +9,14 @@ const Stream = () => {
   const videoRef = useRef<HTMLVideoElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const { emitConnect, emitStream } = useSocketContext();
-  const { openPopup, closePopup } = useUIContext();
   const { requestPermissions, previewStream } = useStream();
   const [resolution, setResolution] = useState({
-    dx: 0,
-    dy: 0,
     dw: 640,
     dh: 480,
   });
   const [isStreaming, setIsStreaming] = useState(false);
   const screenShotTimeInterval = 10;
+  const [showPopup, setShowPopup] = useState(false);
 
   const onSelectDevice = async (deviceId: string) => {
     await previewStream(videoRef, deviceId);
@@ -28,16 +26,12 @@ const Stream = () => {
     }
     setInterval(() => {
       context.drawImage(
-        videoRef.current!,
-        resolution.dx,
-        resolution.dy,
-        resolution.dw,
-        resolution.dh,
+        videoRef.current!, 0, 0, resolution.dw, resolution.dh,
       );
       emitStream(canvasRef.current?.toDataURL("image/webp", "1.0") as string);
       setIsStreaming(true);
     }, screenShotTimeInterval);
-    closePopup();
+    setShowPopup(false);
   };
 
   const onResolutionChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -48,12 +42,15 @@ const Stream = () => {
     // Request permissions to get list of devices
     requestPermissions().then((stream) => {
       emitConnect();
-      openPopup(<SelectDevicePopup onSelect={onSelectDevice} />);
+      setShowPopup(true);
     });
   }, []);
 
   return (
     <>
+      <Modal closable={false} footer={[]} open={showPopup}>
+        <SelectDevicePopup onSelect={onSelectDevice}/>
+      </Modal>
       <div className={s.root} hidden={!isStreaming}>
         <p className="text-center text-white text-4xl">Streaming</p>
         <div className="flex gap-x-4 p-12">
@@ -76,23 +73,6 @@ const Stream = () => {
             onChange={onResolutionChange}
           />
           <p className="text-white">DX</p>
-          <input
-            name="dx"
-            min={0}
-            max={screen.width}
-            type="range"
-            value={resolution.dx}
-            onChange={onResolutionChange}
-          />
-          <p className="text-white">DY</p>
-          <input
-            name="dy"
-            min={0}
-            max={screen.height}
-            type="range"
-            value={resolution.dy}
-            onChange={onResolutionChange}
-          />
         </div>
         <video
           className="w-2/4 h-2/4 m-auto rounded-md border border-gray-500"

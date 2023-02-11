@@ -55,7 +55,13 @@ const signToken = () =>
     }
   );
 
-const verifyToken = (token) => jwt.verify(token, process.env.JWT_SECRET);
+const verifyToken = (token) => {
+  try {
+    return jwt.verify(token, process.env.JWT_SECRET);
+  } catch (error) {
+    return false;
+  }
+};
 
 // Auth routes
 app.post("/auth/login", (req, res) => {
@@ -65,6 +71,19 @@ app.post("/auth/login", (req, res) => {
   } else {
     res.status(401).json({ message: "Invalid password" });
   }
+});
+
+app.post("/auth/refresh", (req, res) => {
+  const { token } = req.body || {};
+  if (!verifyToken(token)) {
+    res.status(401).json({ message: "Invalid token" });
+    return;
+  }
+  res
+    .json({
+      token: signToken(),
+    })
+    .status(200);
 });
 
 // Serve HTML

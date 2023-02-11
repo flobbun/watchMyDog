@@ -3,7 +3,7 @@ import { useSocketContext } from "../../../contexts/SocketContext";
 import ActionsMenu from "../../ui/ActionsMenu/ActionsMenu";
 import s from "./Watch.module.css";
 
-export const NoSteam = () => {
+export const NoStream = () => {
   return (
     <div className="flex p-12 text-center">
       <p className="text-2xl">No stream available</p>
@@ -34,7 +34,7 @@ const Watch = () => {
             <ActionsMenu />
           </>
         ) : (
-          <NoSteam />
+          <NoStream />
         )}
       </div>
     </>

@@ -1,1 +1,0 @@
-export type Mode = "watch" | "stream" | null;
