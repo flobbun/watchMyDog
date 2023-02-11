@@ -31,7 +31,7 @@ const Router = () => {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/">
+        <Route path={RoutePaths.HOME}>
           {routes.map(({ index, element, path }) => (
             <Route
               key={path}

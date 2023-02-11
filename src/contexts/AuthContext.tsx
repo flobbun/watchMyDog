@@ -25,7 +25,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
           navigate(RoutePaths.LOGIN);
           clearStorage(StorageVars.TOKEN)
         }
-      } else if (location.pathname !== RoutePaths.LOGIN){
+      } else if (location.pathname !== RoutePaths.LOGIN) {
         navigate(RoutePaths.LOGIN);
       }
     })();
@@ -33,12 +33,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   return (
     <Context.Provider
-      value={{
-        logout: () => {
-          clearStorage(StorageVars.TOKEN);
-          navigate(RoutePaths.LOGIN);
-        },
-      }}
+      value={{}}
     >
       {children}
     </Context.Provider>

@@ -1,6 +1,7 @@
 declare const io: any;
 
-import { createContext, ReactNode, useContext, useEffect } from "react";
+import { message } from "antd";
+import { createContext, ReactNode, useContext, useEffect, useState } from "react";
 import { StorageVars } from "../constants/StorageVars";
 import useSound from "../hooks/useSound";
 import { getObject } from "../lib/storageManagement";
@@ -13,6 +14,7 @@ export interface SocketContextValue {
   emitDisconnect: () => void;
   emitStream: (data: string) => void;
   emitAction: (action: Action) => void;
+  numberOfUsers: number;
 }
 
 const Context = createContext({} as SocketContextValue);
@@ -20,7 +22,25 @@ const Context = createContext({} as SocketContextValue);
 let socket: any = null;
 
 export const SocketProvider = ({ children }: { children: ReactNode }) => {
+  const [numberOfUsers, setNumberOfUsers] = useState(0);
   const { playSound } = useSound();
+  const [messageApi, contextHolder] = message.useMessage();
+
+  const onConnect = ({ numberOfUsers }: { numberOfUsers: number }) => {
+    setNumberOfUsers(numberOfUsers);
+    messageApi.open({
+      type: 'success',
+      content: 'A user has connected to the server!',
+    });
+  }
+
+  const onDisconnect = ({ numberOfUsers }: { numberOfUsers: number }) => {
+    setNumberOfUsers(numberOfUsers);
+    messageApi.open({
+      type: 'success',
+      content: 'A user has disconnected from the server!',
+    });
+  }
 
   const connect = () => {
     if (socket) {
@@ -46,7 +66,14 @@ export const SocketProvider = ({ children }: { children: ReactNode }) => {
   useEffect(() => {
     if (socket) {
       socket.on('action', onAction);
+      socket.on('userConnected', onConnect);
+      socket.on('userDisconnected', onDisconnect);
     }
+    return () => {
+      socket.off('action', onAction);
+      socket.off('userConnected', onConnect);
+      socket.off('userDisconnected', onDisconnect);
+    };
   }, [socket]);
 
   return (
@@ -65,8 +92,10 @@ export const SocketProvider = ({ children }: { children: ReactNode }) => {
         emitAction: (action: Action) => {
           socket?.emit('action', action);
         },
+        numberOfUsers
       }}
     >
+      {contextHolder}
       {children}
     </Context.Provider>
   );

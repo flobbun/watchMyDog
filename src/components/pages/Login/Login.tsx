@@ -1,14 +1,22 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import RoutePaths from "../../../constants/RoutePaths";
 import useLogin from "../../../hooks/useLogin";
 import s from "./Login.module.css";
 
 const Login = () => {
   const [password, setPassword] = useState("");
   const { error, login } = useLogin();
+  const navigate = useNavigate();
 
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    await login(password);
+    try {
+      await login(password);
+      navigate(RoutePaths.HOME)
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   return (

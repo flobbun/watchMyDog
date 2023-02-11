@@ -4,6 +4,7 @@ import http from "http";
 import dotenv from "dotenv";
 import { Server as socketIO } from "socket.io";
 import jwt from "jsonwebtoken";
+import eiows from "eiows";
 
 dotenv.config();
 
@@ -24,7 +25,9 @@ const ssrManifest = isProduction
 const app = express();
 app.use(express.json());
 const server = http.createServer(app);
-const io = new socketIO(server);
+const io = new socketIO(server, {
+  wsEngine: eiows.Server,
+});
 
 // Add Vite or respective production middlewares
 let vite;
@@ -134,7 +137,13 @@ io.use((socket, next) => {
 });
 
 io.on("connection", (socket) => {
-  console.info("a user connected");
+  console.debug("User connected", socket.id, io.engine.clientsCount);
+  io.sockets.emit('userConnected', { numberOfUsers: io.engine.clientsCount });
+
+  socket.on('disconnect', () => {
+    io.sockets.emit('userDisconnected', { numberOfUsers: io.engine.clientsCount });
+    console.debug("User disconnected", socket.id, io.engine.clientsCount);
+  });
 
   socket.on("stream", (data) => {
     socket.broadcast.emit("stream", data);
@@ -142,9 +151,5 @@ io.on("connection", (socket) => {
 
   socket.on("action", (action) => {
     socket.broadcast.emit("action", action);
-  });
-
-  socket.on("disconnect", () => {
-    console.log("user disconnected");
   });
 });
