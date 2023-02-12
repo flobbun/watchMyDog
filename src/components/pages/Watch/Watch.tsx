@@ -12,32 +12,34 @@ export const NoStream = () => {
 };
 
 const Watch = () => {
-  const { emitConnect, socket } = useSocketContext();
+  const { emitWatch, socket } = useSocketContext();
   const [data, setData] = useState<string | null>(null);
 
   useEffect(() => {
-    emitConnect();
+    emitWatch();
     socket.on("stream", (data: string) => {
       setData(data);
     });
+
+    return () => {
+      socket.off("stream");
+    }
   }, []);
 
   return (
-    <>
-      <div className={s.root}>
-        <p className="text-4xl">Watching</p>
-        {data ? (
-          <>
-            <div className={s.imageContainer}>
-              <img src={data} className={s.renderedImage} />
-            </div>
-            <ActionsMenu />
-          </>
-        ) : (
-          <NoStream />
-        )}
-      </div>
-    </>
+    <div className={s.root}>
+      <p className="text-4xl">Watching</p>
+      {data ? (
+        <>
+          <div className={s.imageContainer}>
+            <img src={data} className={s.renderedImage} />
+          </div>
+          <ActionsMenu />
+        </>
+      ) : (
+        <NoStream />
+      )}
+    </div>
   );
 };
 

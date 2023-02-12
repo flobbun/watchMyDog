@@ -1,19 +1,12 @@
-import { RefObject } from "react";
+import { RefObject, useState } from "react";
 
 const useStream = () => {
+  const [resolution, setResolution] = useState({
+    dw: 640,
+    dh: 480,
+  });
+  const [isStreaming, setIsStreaming] = useState(false);
   const constraints: MediaStreamConstraints = {
-    // video: {
-    //   width: {
-    //     min: innerWidth,
-    //     ideal: innerWidth,
-    //     max: screen.availWidth,
-    //   },
-    //   height: {
-    //     min: innerHeight,
-    //     ideal: innerHeight,
-    //     max: screen.availHeight,
-    //   },
-    // },
     video: true,
     audio: false,
   };
@@ -52,6 +45,10 @@ const useStream = () => {
   };
 
   return {
+    isStreaming,
+    setIsStreaming,
+    resolution,
+    setResolution,
     requestPermissions,
     previewStream,
   };

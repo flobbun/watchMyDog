@@ -1,16 +1,23 @@
 import { useEffect, useState } from "react";
 import ProviderHub from "./components/common/ProviderHub/ProviderHub";
 import Router from "./components/common/Router/Router";
-import Error404 from "./components/pages/Error404/Error404";
+
+export const useDocument = () => {
+  const [myDocument, setMyDocument] = useState<Document | null>(null)
+
+  useEffect(() => {
+    setMyDocument(document)
+  }, [])
+
+  return myDocument
+}
 
 function App() {
-  if (typeof document === 'undefined') {
-    return <Error404/>;
-  }
+  const doc = useDocument()
 
   return (
     <ProviderHub>
-      <Router/>
+      {doc && <Router />}
     </ProviderHub>
   )
 }

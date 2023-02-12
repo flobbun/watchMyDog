@@ -4,7 +4,7 @@ import RoutePaths from "../../../constants/RoutePaths"
 import { useSocketContext } from "../../../contexts/SocketContext"
 
 const Header = () => {
-  const { numberOfUsers } = useSocketContext();
+  const { numberOfUsers, socket } = useSocketContext();
   return (
     <Card size="small">
       <Space className="font-mono" direction="horizontal">
@@ -14,7 +14,7 @@ const Header = () => {
           </h1>
         </Link>
 
-        <div className="ml-10 text-lg">Users On: {numberOfUsers} 🟢</div>
+        {socket.connected && <div className="ml-10 text-lg">Users On: {numberOfUsers} 🟢</div>}
       </Space>
     </Card>
   )

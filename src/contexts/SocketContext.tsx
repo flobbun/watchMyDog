@@ -11,6 +11,7 @@ export type Action = 'bark-1' | 'bark-2' | 'meow' | 'whistle';
 export interface SocketContextValue {
   socket: any;
   emitConnect: () => void;
+  emitWatch: () => void;
   emitDisconnect: () => void;
   emitStream: (data: string) => void;
   emitAction: (action: Action) => void;
@@ -82,6 +83,10 @@ export const SocketProvider = ({ children }: { children: ReactNode }) => {
         socket,
         emitConnect: () => {
           socket?.connect();
+        },
+        emitWatch: () => {
+          socket?.connect();
+          socket?.emit('watch');
         },
         emitDisconnect: () => {
           socket?.disconnect();

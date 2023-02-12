@@ -138,15 +138,23 @@ io.use((socket, next) => {
 
 io.on("connection", (socket) => {
   console.debug("User connected", socket.id, io.engine.clientsCount);
-  io.sockets.emit('userConnected', { numberOfUsers: io.engine.clientsCount });
+  io.sockets.emit("userConnected", { numberOfUsers: io.engine.clientsCount });
 
-  socket.on('disconnect', () => {
-    io.sockets.emit('userDisconnected', { numberOfUsers: io.engine.clientsCount });
+  socket.on("watch", () => {
+    socket.join("watchers");
+    console.debug("User joined room", socket.id);
+  });
+
+  socket.on("disconnect", () => {
+    io.sockets.emit("userDisconnected", {
+      numberOfUsers: io.engine.clientsCount,
+    });
     console.debug("User disconnected", socket.id, io.engine.clientsCount);
   });
 
   socket.on("stream", (data) => {
-    socket.broadcast.emit("stream", data);
+    socket.leave("watchers");
+    socket.to("watchers").emit("stream", data);
   });
 
   socket.on("action", (action) => {

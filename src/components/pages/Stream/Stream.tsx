@@ -1,5 +1,5 @@
 import Modal from "antd/es/modal/Modal";
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { useSocketContext } from "../../../contexts/SocketContext";
 import useStream from "../../../hooks/useStream";
 import SelectDevicePopup from "../../SelectDevicePopup/SelectDevicePopup";
@@ -9,14 +9,19 @@ const Stream = () => {
   const videoRef = useRef<HTMLVideoElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const { emitConnect, emitStream } = useSocketContext();
-  const { requestPermissions, previewStream } = useStream();
-  const [resolution, setResolution] = useState({
-    dw: 640,
-    dh: 480,
-  });
-  const [isStreaming, setIsStreaming] = useState(false);
-  const screenShotTimeInterval = 10;
+  const { requestPermissions, previewStream, resolution, setResolution, isStreaming, setIsStreaming } = useStream();
   const [showPopup, setShowPopup] = useState(false);
+
+  const streamLoop = useCallback((context: CanvasRenderingContext2D | null | undefined) => {
+    if (videoRef.current && context) {
+      context?.drawImage(
+        videoRef.current!, 0, 0, resolution.dw, resolution.dh,
+      );
+      emitStream(canvasRef.current?.toDataURL("image/webp", "1.0") as string);
+      setIsStreaming(true);
+      requestAnimationFrame(() => streamLoop(context));
+    }
+  }, [videoRef.current, canvasRef.current, resolution, emitStream, setIsStreaming]);
 
   const onSelectDevice = async (deviceId: string) => {
     await previewStream(videoRef, deviceId);
@@ -24,13 +29,7 @@ const Stream = () => {
     if (!context) {
       throw new Error("Canvas context is not defined");
     }
-    setInterval(() => {
-      context.drawImage(
-        videoRef.current!, 0, 0, resolution.dw, resolution.dh,
-      );
-      emitStream(canvasRef.current?.toDataURL("image/webp", "1.0") as string);
-      setIsStreaming(true);
-    }, screenShotTimeInterval);
+    streamLoop(context);
     setShowPopup(false);
   };
 
@@ -49,7 +48,7 @@ const Stream = () => {
   return (
     <>
       <Modal closable={false} footer={[]} open={showPopup}>
-        <SelectDevicePopup onSelect={onSelectDevice}/>
+        <SelectDevicePopup onSelect={onSelectDevice} />
       </Modal>
       <div className={s.root} hidden={!isStreaming}>
         <p className="text-center text-white text-4xl">Streaming</p>
