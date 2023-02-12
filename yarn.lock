@@ -768,7 +768,7 @@ ee-first@1.1.1:
   resolved "https://registry.yarnpkg.com/ee-first/-/ee-first-1.1.1.tgz#590c61156b0ae2f4f0255732a158b266bc56b21d"
   integrity sha512-WMwm9LhRUo+WUaRN+vRuETqG89IgZphVSNkdFgeb6sS/E4OrDIN7t48CAewSHXc6C8lefD8KKfr5vY61brQlow==
 
-eiows@^4.1.2:
+eiows@^4.0.0:
   version "4.1.2"
   resolved "https://registry.yarnpkg.com/eiows/-/eiows-4.1.2.tgz#68a4ed4a221877557dd5d7ad616381143072b07d"
   integrity sha512-dNu+yOdp/mPROgEIW9pFnx+iBLob130BPqspXxSt63OvICtitrpYQSmdJ2M7irIwqh3oj1JfDKadHPCocKPBpg==

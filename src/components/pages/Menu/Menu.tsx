@@ -1,5 +1,4 @@
-import { Button, Space } from "antd";
-import Title from "antd/es/typography/Title";
+import { Button, Space, Typography } from "antd";
 import { Link, useNavigate } from "react-router-dom";
 import RoutePaths from "../../../constants/RoutePaths";
 import { StorageVars } from "../../../constants/StorageVars";
@@ -11,7 +10,7 @@ const Menu = () => {
 
   return (
     <Space direction="vertical" className={s.root + ' container-bg'}>
-      <Title>What do you want to do?</Title>
+      <Typography>What do you want to do?</Typography>
       <Space className="justify-center">
         <Link to={RoutePaths.WATCH}>
           <Button size="large">

@@ -8,6 +8,11 @@ import { getObject } from "../lib/storageManagement";
 
 export type Action = 'bark-1' | 'bark-2' | 'meow' | 'whistle';
 
+interface StreamData {
+  data: string;
+  id: string;
+}
+
 export interface SocketContextValue {
   socket: any;
   emitConnect: () => void;
@@ -15,6 +20,7 @@ export interface SocketContextValue {
   emitDisconnect: () => void;
   emitStream: (data: string) => void;
   emitAction: (action: Action) => void;
+  onStream: (cb: (data: StreamData) => void) => void;
   numberOfUsers: number;
 }
 
@@ -81,22 +87,15 @@ export const SocketProvider = ({ children }: { children: ReactNode }) => {
     <Context.Provider
       value={{
         socket,
-        emitConnect: () => {
-          socket?.connect();
-        },
+        emitConnect: () => socket?.connect(),
         emitWatch: () => {
           socket?.connect();
           socket?.emit('watch');
         },
-        emitDisconnect: () => {
-          socket?.disconnect();
-        },
-        emitStream: (data: string) => {
-          socket?.emit('stream', data);
-        },
-        emitAction: (action: Action) => {
-          socket?.emit('action', action);
-        },
+        emitDisconnect: () => socket?.disconnect(),
+        emitStream: (data: string) => socket?.emit('stream', data),
+        emitAction: (action: Action) => socket?.emit('action', action),
+        onStream: (cb: (data: StreamData) => void) => socket.on("stream", cb),
         numberOfUsers
       }}
     >

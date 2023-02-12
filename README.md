@@ -49,6 +49,14 @@ This project could help you with any similar problem, maybe you want to spy some
     http://localhost:5173
     ```
 
+## Running the project with Docker
+
+1. yarn build
+
+2. docker build -t flobbun/watchmydog --build-arg PASSWORD=patata9999 --build-arg JWT_SECRET=ASDPSADPPWQOEPWQOXAZ-LDSsaldjasldkqweWQSad -f Dockerfile .
+
+3. docker run -p 5173:5173 flobbun/watchmydog
+
 ## Contributions
 All contributions are welcome. Fork the repository, make changes and submit a pull request.
 
