@@ -1,5 +1,5 @@
 .root {
-    @apply text-white text-center;
+    @apply text-white text-center p-8 gap-y-8;
 }
 
 .canvas {

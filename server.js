@@ -154,7 +154,7 @@ io.on("connection", (socket) => {
 
   socket.on("stream", (data) => {
     socket.leave("watchers");
-    socket.to("watchers").emit("stream", data);
+    socket.to("watchers").emit("stream", {data, id: socket.id});
   });
 
   socket.on("action", (action) => {
