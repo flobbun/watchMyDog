@@ -53,7 +53,7 @@ This project could help you with any similar problem, maybe you want to spy some
 
 1. yarn build
 
-2. docker build -t flobbun/watchmydog --build-arg PASSWORD=patata9999 --build-arg JWT_SECRET=ASDPSADPPWQOEPWQOXAZ-LDSsaldjasldkqweWQSad -f Dockerfile .
+2. docker build -t flobbun/watchmydog --build-arg PASSWORD=your_password --build-arg JWT_SECRET=your_jwt_secret -f Dockerfile .
 
 3. docker run -p 5173:5173 flobbun/watchmydog
 
