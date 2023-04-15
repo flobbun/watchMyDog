@@ -3,9 +3,9 @@ A real-time dog-watching app using Node.js and React, with web sockets to broadc
 
 ## Why
 I have a very scared and naughty dog that makes weird stuff when I'm not around so I thought it would be fun
-to create a way to watch what his doing from my phone.
+to create a way to watch what he is doing from my phone.
 
-This project could help you with any similar problem, maybe you want to spy something/someone, who knows...
+This project could help you with any similar problem, maybe you want to spy on something/someone, who knows...
 
 ## Features
 - Real-time streaming of your dog using web sockets
