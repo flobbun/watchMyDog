@@ -8,7 +8,7 @@
   },
   "include": [
     "vite.config.ts",
-    "src/entry-server.tsx",
-    "src/vite-env.d.ts"
+    "client/entry-server.tsx",
+    "client/vite-env.d.ts"
   ]
 }
